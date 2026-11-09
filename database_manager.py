@@ -59,9 +59,22 @@ def validate_json(json_data):
       except:
             return False
 
-def extension_add(response):
-      if validate_json(response):
-            return {"message": "Extension added successfully"}, 201
+def extension_add(data):
+      if validate_json(data):
+            with sql.connect("database/data_source.db") as con:
+                  cur = con.cursor()
+                  cur.execute(
+                        "INSERT INTO extension (name, hyperlink, about, image, language) VALUES (?, ?, ?, ?, ?)",
+                        [
+                              data["name"],
+                              data["hyperlink"],
+                              data["about"],
+                              data["image"],
+                              data["language"],
+                        ],
+                  )
+                  con.commit()
+            return jsonify({"message": "Extension added successfully"}), 201
       else:
-            return {"error": "Invalid JSON"}, 400
+            return jsonify({"error": "Invalid JSON"}), 400
       

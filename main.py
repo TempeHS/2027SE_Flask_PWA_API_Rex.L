@@ -42,7 +42,14 @@ def privacy():
       }
 )
 def index():
-      return render_template("/index.html")
+      url = "http://127.0.0.1:3000"
+      try:
+            response = requests.get(url)
+            response.raise_for_status()
+            data = response.json()
+      except requests.exceptions.RequestException as e:
+            data = {"error": "Failed to retrieve data from API"}
+      return render_template("/index.html", data=data)
 
 
 @app.route("/csp_report", methods=["POST"])

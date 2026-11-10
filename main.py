@@ -17,6 +17,9 @@ app_header = {"Authorisation": "4L50v92nOgcDCYUM"}
 def root():
       return redirect("/", 302)
 
+@app.route("/privacy.html", methods=["GET"])
+def privacy():
+      return render_template("/privacy.html")
 
 @app.route("/", methods=["GET"])
 @csp_header(
